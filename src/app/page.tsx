@@ -3,7 +3,7 @@ import { PrefecturesCheckList } from "@/components/PrefecturesCheckList";
 export default function Home() {
   return (
     <>
-      <div className="flex justify-center text-[1.875rem] font-semibold text-[#827f82]">Yumemi Graph App</div>
+      <div className="flex justify-center text-[1.875rem] font-semibold">Yumemi Graph App</div>
       <PrefecturesCheckList />
     </>
   );
