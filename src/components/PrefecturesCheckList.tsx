@@ -63,7 +63,7 @@ export const PrefecturesCheckList = () => {
         for (const prefCode of selectedPrefectures) {
           const population = await getPopulationPerYear(prefCode);
           console.log(population);
-          population.result.data[dataTypeIndex].data.forEach((item: any, index: number) => {
+          population.result.data[dataTypeIndex].data.forEach((item: { year: number; value: number }, index: number) => {
             if (!updatedPopulationData[index]) {
               updatedPopulationData[index] = { year: item.year };
             }
