@@ -21,6 +21,7 @@ export const PrefecturesCheckList = () => {
   const [selectedPrefectures, setSelectedPrefectures] = useState<Set<number>>(new Set());
   const [populationData, setPopulationData] = useState<PopulationData[]>([]);
   const [colorMap, setColorMap] = useState<{ [key: number]: string }>({});
+  const [dataTypeIndex, setDataTypeIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,12 +57,13 @@ export const PrefecturesCheckList = () => {
 
   useEffect(() => {
     const fetchPopulationData = async () => {
-      const updatedPopulationData: PopulationData[] = [...populationData];
+      const updatedPopulationData: PopulationData[] = [...INITIAL_YEARS];
 
       try {
         for (const prefCode of selectedPrefectures) {
           const population = await getPopulationPerYear(prefCode);
-          population.result.data[0].data.forEach((item: any, index: number) => {
+          console.log(population);
+          population.result.data[dataTypeIndex].data.forEach((item: any, index: number) => {
             if (!updatedPopulationData[index]) {
               updatedPopulationData[index] = { year: item.year };
             }
@@ -78,7 +80,7 @@ export const PrefecturesCheckList = () => {
     } else {
       setPopulationData(INITIAL_YEARS);
     }
-  }, [selectedPrefectures]);
+  }, [selectedPrefectures, dataTypeIndex]);
 
   return (
     <>
@@ -92,6 +94,12 @@ export const PrefecturesCheckList = () => {
         ))}
       </div>
       <div className="mt-5">
+        <div className="w-full text-center text-2xl font-semibold mb-4">
+          {dataTypeIndex === 0 && "総人口推移"}
+          {dataTypeIndex === 1 && "年少人口推移"}
+          {dataTypeIndex === 2 && "生産年齢人口推移"}
+          {dataTypeIndex === 3 && "老年人口推移"}
+        </div>
         <ResponsiveContainer width="100%" height={400}>
           <LineChart data={populationData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -104,6 +112,20 @@ export const PrefecturesCheckList = () => {
             ))}
           </LineChart>
         </ResponsiveContainer>
+        <div className="flex justify-center gap-5">
+          <button onClick={() => setDataTypeIndex(0)} className={`rounded-[4px] font-semibold text-white px-4 py-2 transition-colors duration-200 ${dataTypeIndex === 0 ? "bg-[#2d716d]" : "bg-[rgba(0,164,150,1)] hover:bg-[#50d7cc]"}`}>
+            総人口
+          </button>
+          <button onClick={() => setDataTypeIndex(1)} className={`rounded-[4px] font-semibold text-white px-4 py-2 transition-colors duration-200 ${dataTypeIndex === 1 ? "bg-[#2d716d]" : "bg-[rgba(0,164,150,1)] hover:bg-[#50d7cc]"}`}>
+            年少人口
+          </button>
+          <button onClick={() => setDataTypeIndex(2)} className={`rounded-[4px] font-semibold text-white px-4 py-2 transition-colors duration-200 ${dataTypeIndex === 2 ? "bg-[#2d716d]" : "bg-[rgba(0,164,150,1)] hover:bg-[#50d7cc]"}`}>
+            生産年齢人口
+          </button>
+          <button onClick={() => setDataTypeIndex(3)} className={`rounded-[4px] font-semibold text-white px-4 py-2 transition-colors duration-200 ${dataTypeIndex === 3 ? "bg-[#2d716d]" : "bg-[rgba(0,164,150,1)] hover:bg-[#50d7cc]"}`}>
+            老年人口
+          </button>
+        </div>
       </div>
     </>
   );
