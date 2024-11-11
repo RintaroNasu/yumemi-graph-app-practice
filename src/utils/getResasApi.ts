@@ -1,5 +1,7 @@
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
 export const getPrefectures = async () => {
-  const url = "http://localhost:3000/api/prefectures";
+  const url = `${baseUrl}/api/prefectures`;
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -19,7 +21,7 @@ export const getPrefectures = async () => {
 };
 
 export const getPopulationPerYear = async (id: number) => {
-  const url = `http://localhost:3000/api/population?perYear=${id}`;
+  const url = `${baseUrl}/api/population?perYear=${id}`;
   try {
     const response = await fetch(url, {
       method: "GET",
